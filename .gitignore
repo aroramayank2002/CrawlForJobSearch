@@ -1,0 +1,7 @@
+target
+log
+derbyDB
+.settings
+.classpath
+.project
+credentials.properties

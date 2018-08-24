@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="derby-1656b04355e-46da00f17e8a3000" provider="generic" driver="derby" name="Derby - derbyDB" save-password="false" read-only="false">
+		<connection server="" database="E:\215_frankly\workspace\CrawlForJobSearch\derbyDB" url="jdbc:derby:E:\215_frankly\workspace\CrawlForJobSearch\derbyDB" type="dev"/>
+	</data-source>
+	<filters/>
+</data-sources>
