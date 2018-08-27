@@ -36,8 +36,8 @@ public class FindJobsTest extends BaseTest {
 	public void addKeywordsAndSearch() {
 		logger.info("Search with keywords");
 		homePageMonster.searchForKeywords(
-				getTestProperties().getProperty("search.keywords.monster"),
-				getTestProperties().getProperty("search.location.monster"));
+				testProperties.getProperty("search.keywords.monster"),
+				testProperties.getProperty("search.location.monster"));
 	}
 
 	@Test(dependsOnMethods = { "addKeywordsAndSearch" })

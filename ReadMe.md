@@ -21,6 +21,9 @@ password=<password>
 ````
 
 Execute the DatabaseService.java class to setup derby database.
+```
+mvn exec:java@CreateSchema
+```
 Run below maven command
 
 ```
