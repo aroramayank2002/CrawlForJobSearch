@@ -4,14 +4,13 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
-import com.m.util.GeneralUtil;
 import com.m.util.ParentUtil;
-import com.m.util.SendMailSSL;
 
 public class BaseTest extends ParentUtil{
 	Logger logger = LoggerFactory.getLogger(BaseTest.class);
@@ -21,15 +20,22 @@ public class BaseTest extends ParentUtil{
 	@BeforeSuite
 	public void globalSetup() throws IOException {
 		logger.info("Initializing global setup.");
-		service = new ChromeDriver();
-		System.setProperty("webdriver.chrome.driver",
-				capabilities.getProperty("webdriver.chrome.driver"));
+		
+		ChromeOptions chromeOptions = new ChromeOptions();
+//		chromeOptions.addArguments("--headless");
+		chromeOptions.addArguments("disable-infobars");
+		service = new ChromeDriver(chromeOptions);
+		String driverPath = capabilities.getProperty("webdriver.chrome.driver");
+		String osName = System.getProperty("os.name");
+		if(osName.contains("Windows")){
+			driverPath += ".exe";
+		}		
+		System.setProperty("webdriver.chrome.driver", driverPath);
 	}
 
 	@AfterSuite
 	public void globalTearDown() {
 		service.close();
-		new SendMailSSL().sendMail(GeneralUtil.getLogFilePath());
 	}
 
 	public WebDriver getDriver() {

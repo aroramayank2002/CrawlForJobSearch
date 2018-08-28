@@ -23,7 +23,7 @@ import com.crawl.test.BaseTest;
 public class SendMailSSL extends BaseTest {
 	Logger logger = LoggerFactory.getLogger(SendMailSSL.class);
 
-	public void sendMail(String logFilePath) {
+	public void sendMail(String logFilePath, String siteString) {
 		logger.info("Jobs file path: " + logFilePath);
 		logger.debug("Username: " + credentials.getProperty("username")
 				+ ", Password: " + credentials.getProperty("password"));
@@ -53,7 +53,7 @@ public class SendMailSSL extends BaseTest {
 					Message.RecipientType.TO,
 					InternetAddress.parse(testProperties.getProperty(
 							"mail.to", "aroramayank2002@gmail.com")));
-			message.setSubject(testProperties.getProperty("mail.subject"));
+			message.setSubject(siteString +" " +testProperties.getProperty("mail.subject"));
 			String body = new String(Files.readAllBytes(Paths.get(logFilePath)));
 			// String body =
 			// "<a href=\"https://jobberbjudande.monster.se/Test-Test-Management-Test-automation-Stockholm-Stockholm-STHM-Sweden-%C3%85F/11/197542963\">ACTIVAR CUENTA</a>";

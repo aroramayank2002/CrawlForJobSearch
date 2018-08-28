@@ -1,8 +1,8 @@
 package com.m.util;
 
-import java.io.File;
 import java.util.Iterator;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.LoggerContext;
@@ -11,10 +11,10 @@ import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.FileAppender;
 
 public class GeneralUtil {
+	static Logger myLogger = LoggerFactory.getLogger(GeneralUtil.class);
 	
-	public static String getLogFilePath() {
-		String logFilePath = null;
-		File clientLogFile;
+	public static String getLogFilePath(String loggerName) {
+		myLogger.info("Logger name: " + loggerName);
 		FileAppender<?> fileAppender = null;
 		LoggerContext context = (LoggerContext) LoggerFactory
 				.getILoggerFactory();
@@ -24,20 +24,17 @@ public class GeneralUtil {
 				Object enumElement = index.next();
 				if (enumElement instanceof FileAppender) {
 					fileAppender = (FileAppender<?>) enumElement;
+					String name = fileAppender.getName();
+					myLogger.info("File appender name: " + name);
+					myLogger.info("File appender file: " + fileAppender.getFile());
+					if(null != name && name.contains(loggerName)){
+						return fileAppender.getFile();
+					}
 				}
-				// System.out.println("logfile path" + enumElement);
 			}
 		}
-
-		if (fileAppender != null) {
-			clientLogFile = new File(fileAppender.getFile());
-			System.out
-					.println("logfile path" + clientLogFile.getAbsolutePath());
-			logFilePath = fileAppender.getFile();
-		} else {
-			clientLogFile = null;
-		}
-		return logFilePath;
+		
+		return null;
 	}
 
 }

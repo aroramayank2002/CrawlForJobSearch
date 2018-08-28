@@ -162,15 +162,20 @@ public class DatabaseService {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		Class.forName(driver).newInstance();
 //		To remove schema manually delete the folder from OS.
+//		1
 //		createSchema();
 //		initializeDB();
 //		closeDB();
 		
-		
+//		2
 		cleanDB();
+		closeDB();
 //		removeTable();
+		
+//		logger.info();
 	}
 
 }

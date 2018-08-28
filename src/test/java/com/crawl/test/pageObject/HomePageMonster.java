@@ -21,7 +21,8 @@ import com.crawl.test.BaseTest;
 
 public class HomePageMonster extends BaseTest {
 	Logger logger = LoggerFactory.getLogger(HomePageMonster.class);
-	Logger jobLogger = LoggerFactory.getLogger("details");
+	String jobLoggerName = "monster";
+	Logger jobLogger = LoggerFactory.getLogger(jobLoggerName);
 	// AndroidDriver<MobileElement> driver;
 	WebDriver driver;
 	WebDriverWait wait;
@@ -67,7 +68,6 @@ public class HomePageMonster extends BaseTest {
 	}
 
 	public void searchForKeywords(String keyWords, String location) {
-		// TODO Auto-generated method stub
 		searchTextField.sendKeys(keyWords);
 		locationTextField.sendKeys(location);
 		searchButton.click();
@@ -158,6 +158,10 @@ public class HomePageMonster extends BaseTest {
 		}
 		logger.info("Limit:" + limit + ", counter: " + this.counter);
 		return unUsed;
+	}
+	
+	public String getJobLoggerName(){
+		return jobLoggerName;
 	}
 
 }

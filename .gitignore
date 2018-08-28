@@ -5,3 +5,4 @@ derbyDB
 .classpath
 .project
 credentials.properties
+test-output
