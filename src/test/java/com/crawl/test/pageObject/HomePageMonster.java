@@ -136,7 +136,6 @@ public class HomePageMonster extends BaseTest {
 		int startFrom = matches.size();
 		logger.info("Job banners size:" + matches.size() + ", page: "
 				+ pageCounter++);
-		// matches.stream().forEach(p -> extractData(p));
 
 		List<WebElement> unUsed = matches.stream()
 				.filter(match -> extractData(match))
@@ -149,7 +148,6 @@ public class HomePageMonster extends BaseTest {
 			}
 			logger.info("Job banners size:" + nextPage.size() + ", page: "
 					+ pageCounter++);
-			// nextPage.stream().forEach(p -> extractData(p));
 			startFrom += nextPage.size();
 			unUsed.addAll(matches.stream().filter(match -> extractData(match))
 					.collect(Collectors.<WebElement> toList()));

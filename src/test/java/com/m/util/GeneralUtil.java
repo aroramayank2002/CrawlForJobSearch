@@ -14,7 +14,7 @@ public class GeneralUtil {
 	static Logger myLogger = LoggerFactory.getLogger(GeneralUtil.class);
 	
 	public static String getLogFilePath(String loggerName) {
-		myLogger.info("Logger name: " + loggerName);
+		myLogger.debug("Logger name: " + loggerName);
 		FileAppender<?> fileAppender = null;
 		LoggerContext context = (LoggerContext) LoggerFactory
 				.getILoggerFactory();
@@ -25,9 +25,9 @@ public class GeneralUtil {
 				if (enumElement instanceof FileAppender) {
 					fileAppender = (FileAppender<?>) enumElement;
 					String name = fileAppender.getName();
-					myLogger.info("File appender name: " + name);
-					myLogger.info("File appender file: " + fileAppender.getFile());
+					myLogger.debug("File appender name: " + name);
 					if(null != name && name.contains(loggerName)){
+						myLogger.info("Jobs file: " + fileAppender.getFile());
 						return fileAppender.getFile();
 					}
 				}

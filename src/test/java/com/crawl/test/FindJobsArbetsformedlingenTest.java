@@ -6,7 +6,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.crawl.test.pageObject.HomePageMonster;
 import com.crawl.test.pageObject.SearchArbetsformedlingen;
 import com.m.util.GeneralUtil;
 import com.m.util.SendMailSSL;
@@ -49,7 +48,7 @@ public class FindJobsArbetsformedlingenTest extends BaseTest {
 	public void findAllLinks() throws InterruptedException {
 		logger.info("Find job listings");
 		logger.info("Nmber of links: " + arbetsformedlingen.getJobs().size());
-		Thread.sleep(10000);
+//		Thread.sleep(10000);
 	}
 
 }

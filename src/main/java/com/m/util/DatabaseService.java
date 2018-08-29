@@ -22,18 +22,10 @@ public class DatabaseService {
 	private static final String MONSTER_URL_TABLE = "URL";
 
 	private static Connection connect() throws SQLException {
-//		return DriverManager.getConnection(protocol + connectionString);
-//		return DriverManager.getConnection(protocol + connectionString);
 		return DriverManager.getConnection(connectionString);
 	}
 
 	private static void createDB() {
-//		try {
-//			Class.forName(driver).newInstance();
-//		} catch (InstantiationException | IllegalAccessException
-//				| ClassNotFoundException e) {
-//			e.printStackTrace();
-//		}
 		try (Connection conn = connect();
 				Statement stmt = conn.createStatement()) {
 

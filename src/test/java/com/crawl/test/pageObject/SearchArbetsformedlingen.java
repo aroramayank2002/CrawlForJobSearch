@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -31,13 +31,13 @@ public class SearchArbetsformedlingen extends BaseTest {
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(), 'Sök jobb')]")
 	WebElement searchButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[contains(text(), 'Jag förstår')]")
 	WebElement exceptCookies;
 
 	@FindBy(how = How.ID, using = "mp-yrkesroller")
 	WebElement searchTextField;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[contains(text(), 'Fritextsökning')]")
 	WebElement testSearchLabel;
 
@@ -46,16 +46,16 @@ public class SearchArbetsformedlingen extends BaseTest {
 
 	@FindBy(how = How.ID, using = "mp-arbetsorter")
 	WebElement locationTextField;
-	
+
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(), 'Vad du söker')]")
 	WebElement locationSearchLabel;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = "hittade-annonser")
 	WebElement foundJobsCountLabel;
 
 	@FindBy(how = How.CSS, using = ".list-unstyled.spa-dropdown-list")
 	WebElement dropDownDiv;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[contains(text(), 'Publiceringsdatum')]")
 	WebElement releaseDateDropDown;
 
@@ -64,24 +64,24 @@ public class SearchArbetsformedlingen extends BaseTest {
 
 	@FindBy(how = How.ID, using = "sort-ordning")
 	WebElement firstDropDown;
-	
-	@FindBy(how = How.CSS, using = ".spa-profile-heading.dropdown-toggle") 
+
+	@FindBy(how = How.CSS, using = ".spa-profile-heading.dropdown-toggle")
 	WebElement listClick;
-	
-	@FindBy(how = How.ID, using = "meny-dropdown") 
+
+	@FindBy(how = How.ID, using = "meny-dropdown")
 	WebElement secondDropDownList;
-	
-//	@FindBy(how = How.CSS, using = ".spa-dropdown-menu.dropdown-menu")
-//	WebElement secondDropDown;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = "pb-spinner-text-sm")
 	WebElement spinnerText;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = "ng-scope")
 	WebElement jobSummariesContainer;
 
 	@FindAll({ @FindBy(how = How.CLASS_NAME, using = "resultatrad") })
 	List<WebElement> jobSummaries;
+
+	@FindAll({ @FindBy(how = How.CSS, using = ".next.nav-btn.ng-scope") })
+	WebElement moreResults;
 
 	public SearchArbetsformedlingen(WebDriver driver) {
 		this.driver = driver;
@@ -95,34 +95,35 @@ public class SearchArbetsformedlingen extends BaseTest {
 		this.driver.get(url);
 		wait.until(ExpectedConditions.visibilityOf(searchButton));
 		exceptCookies.click();
-//		jobLogger.info("Today" + " | <a href=\"" + url + "\">Ha ha ha </a><br/>");
+		// jobLogger.info("Today" + " | <a href=\"" + url +
+		// "\">Ha ha ha </a><br/>");
 	}
 
 	public void searchForKeywords(String keyWords, String location) {
 		searchButton.click();
 		wait.until(ExpectedConditions.visibilityOf(searchTextField));
-		
+
 		locationTextField.sendKeys(location);
 		locationTextField.sendKeys(Keys.RETURN);
 		wait.until(ExpectedConditions.invisibilityOf(spinnerText));
 		wait.until(ExpectedConditions.visibilityOf(locationSearchLabel));
-		
+
 		searchTextField.sendKeys(keyWords);
 		searchTextField.sendKeys(Keys.RETURN);
 		wait.until(ExpectedConditions.visibilityOf(listClick));
 		wait.until(ExpectedConditions.invisibilityOf(spinnerText));
-		
-		logger.info("Clicking first drop down.");
-		listClick.click();
-		wait.until(ExpectedConditions.visibilityOf(dropDownDiv));
-		releaseDateDropDown.click();
-		
-		logger.info("Clicking second drop down.");
-		wait.until(ExpectedConditions.visibilityOf(firstDropDown));
-		secondDropDownList.click();
-		wait.until(ExpectedConditions.visibilityOf(lastDayPublishedDropDown));
-		lastDayPublishedDropDown.click();
-		wait.until(ExpectedConditions.invisibilityOf(spinnerText));
+
+		// logger.info("Clicking first drop down.");
+		// listClick.click();
+		// wait.until(ExpectedConditions.visibilityOf(dropDownDiv));
+		// releaseDateDropDown.click();
+		//
+		// logger.info("Clicking second drop down.");
+		// wait.until(ExpectedConditions.visibilityOf(firstDropDown));
+		// secondDropDownList.click();
+		// wait.until(ExpectedConditions.visibilityOf(lastDayPublishedDropDown));
+		// lastDayPublishedDropDown.click();
+		// wait.until(ExpectedConditions.invisibilityOf(spinnerText));
 	}
 
 	public List<WebElement> getJobs() {
@@ -133,40 +134,30 @@ public class SearchArbetsformedlingen extends BaseTest {
 		this.counter = 0;
 		this.limit = Integer.parseInt(testProperties
 				.getProperty("search.jobsLimit"));
-		// List<WebElement> matches = jobSummaries.stream()
-		// .filter(p -> p.getAttribute(JOB_SELECTOR_ATTRIBUTE) != null)
-		// .collect(Collectors.<WebElement> toList());
 		List<WebElement> matches = jobSummaries;
-		int startFrom = matches.size();
+//		int startFrom = matches.size();
 		logger.info("Job banners size:" + matches.size() + ", page: "
 				+ pageCounter++);
-		// matches.stream().forEach(p -> extractData(p));
 
 		List<WebElement> unUsed = matches.stream()
 				.filter(match -> extractData(match))
 				.collect(Collectors.<WebElement> toList());
-		// while (this.counter < limit) {
-		// logger.info("Limit:" + limit + ", counter: " + this.counter);
-		// List<WebElement> nextPage = getFurtherJobs(startFrom);
-		// if(null == nextPage){
-		// break;
-		// }
-		// logger.info("Job banners size:" + nextPage.size() + ", page: "
-		// + pageCounter++);
-		// // nextPage.stream().forEach(p -> extractData(p));
-		// startFrom += nextPage.size();
-		// unUsed.addAll(matches.stream().filter(match -> extractData(match))
-		// .collect(Collectors.<WebElement> toList()));
-		// logger.info("Job unused  size:" + unUsed.size() + ", page: "
-		// + pageCounter++);
-		// }
-		logger.info("Limit:" + limit + ", counter: " + this.counter);
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		while (this.counter < limit) {
+			logger.info("Limit:" + limit + ", counter: " + this.counter);
+
+			List<WebElement> nextPage = getFurtherJobs();
+			if (null == nextPage) {
+				break;
+			}
+			logger.info("Job banners size:" + nextPage.size() + ", page: "
+					+ pageCounter++);
+			unUsed.addAll(matches.stream().filter(match -> extractData(match))
+					.collect(Collectors.<WebElement> toList()));
+			logger.info("Job unused  size:" + unUsed.size() + ", page: "
+					+ pageCounter++);
 		}
-		return unUsed;
+		logger.info("Limit:" + limit + ", counter: " + this.counter);
+		 return unUsed;
 	}
 
 	private boolean extractData(WebElement webElement) {
@@ -191,24 +182,41 @@ public class SearchArbetsformedlingen extends BaseTest {
 			String urlSplit[] = url.split("/");
 			logger.debug("Url: " + urlSplit[urlSplit.length - 1]);
 
-			long id = dbService.insertUrl(url);
-			if (0 == id) {
-				logger.warn("Job already shared: " + summary);
-				return false;
-			} else {
-				jobLogger.info(publishedDate + " | <a href=\"" + url + "\">"
-						+ summary + " </a><br/>");
-				logger.info("Saving Url: " + urlSplit[urlSplit.length - 1]);
-				this.counter++;
-				return true;
-			}
+			 long id = dbService.insertUrl(url);
+			 if (0 == id) {
+			 logger.warn("Job already shared: " + summary);
+			 return false;
+			 } else {
+			 jobLogger.info(publishedDate + " | <a href=\"" + url + "\">"
+			 + summary + " </a><br/>");
+			 logger.info("Saving Url: " + urlSplit[urlSplit.length - 1]);
+			 this.counter++;
+			 return true;
+			 }
 
 		} else {
 			return false;
 		}
 	}
-	
-	public String getJobLoggerName(){
+
+	public List<WebElement> getFurtherJobs() {
+		moreResults.click();
+		try {
+			wait.until(ExpectedConditions.visibilityOf(moreResults));
+		} catch (WebDriverException ex) {
+			logger.error("Couldn't see the next button, means all records are shown now."
+					+ ex.getMessage());
+			return null;
+		}
+
+		List<WebElement> matches = jobSummaries.stream().collect(Collectors.<WebElement> toList());
+
+		logger.info("Job banners after skipping already used:" + matches.size());
+		return matches;
+
+	}
+
+	public String getJobLoggerName() {
 		return jobLoggerName;
 	}
 }

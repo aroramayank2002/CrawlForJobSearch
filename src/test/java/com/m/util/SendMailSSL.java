@@ -67,7 +67,8 @@ public class SendMailSSL extends BaseTest {
 
 			Transport.send(message);
 
-			logger.info("Mail sent");
+			logger.info("Mail sent to: " + testProperties.getProperty(
+					"mail.to", "aroramayank2002@gmail.com"));
 
 		} catch (MessagingException | IOException e) {
 			throw new RuntimeException(e);

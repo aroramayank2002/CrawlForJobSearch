@@ -6,3 +6,4 @@ derbyDB
 .project
 credentials.properties
 test-output
+derby.log
